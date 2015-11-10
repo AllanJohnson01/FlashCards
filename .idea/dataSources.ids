@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - flash_cards_db@localhost" uuid="8bfc5934-8528-45c2-a348-c66570a5bf84">
+    <database-info product="MySQL" version="5.7.9" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper"/>
+    <schema name="" catalog="flash_cards_db"/>
+    <table name="Cards" schema="" catalog="flash_cards_db" type="TABLE">
+      <column name="idCards" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="front" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="backside" sqlType="VARCHAR" precision="400" scale="0" nullable="true" jdbcType="12"/>
+      <column name="shownCount" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="rightCount" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="wrongCount" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="level" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MQ=="/>
+      <column name="inARow" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <primary-key name="PRIMARY" columns="idCards"/>
+      <exported-key name="cards_lists_ibfk_1" table="cards_lists" schema="" catalog="flash_cards_db" columns="idCards"/>
+      <index name="unique_front" unique="true" columns="front"/>
+      <index name="unique_idCards" unique="true" columns="idCards"/>
+    </table>
+    <table name="Users" schema="" catalog="flash_cards_db" type="TABLE">
+      <column name="idUsers" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="fname" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="lname" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="birthDay" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="creationTime" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="idUsers"/>
+      <exported-key name="users_lists_ibfk_1" table="Users_lists" schema="" catalog="flash_cards_db" columns="idUsers"/>
+      <index name="unique_idUsers" unique="true" columns="idUsers"/>
+    </table>
+    <table name="Users_lists" schema="" catalog="flash_cards_db" type="TABLE">
+      <column name="idUsers" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idlist" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <foreign-key name="users_lists_ibfk_1" columns="idUsers" ref-table="Users" ref-schema="" ref-catalog="flash_cards_db" ref-columns="idUsers" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="users_lists_ibfk_2" columns="idlist" ref-table="lists" ref-schema="" ref-catalog="flash_cards_db" ref-columns="idlists" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="cards_lists" schema="" catalog="flash_cards_db" type="TABLE">
+      <column name="idCards" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="idlists" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4" def="MQ=="/>
+      <foreign-key name="cards_lists_ibfk_1" columns="idCards" ref-table="Cards" ref-schema="" ref-catalog="flash_cards_db" ref-columns="idCards" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="cards_lists_ibfk_2" columns="idlists" ref-table="lists" ref-schema="" ref-catalog="flash_cards_db" ref-columns="idlists" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="lists" schema="" catalog="flash_cards_db" type="TABLE">
+      <column name="idlists" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="listName" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="idlists"/>
+      <exported-key name="users_lists_ibfk_2" table="Users_lists" schema="" catalog="flash_cards_db" columns="idlist"/>
+      <exported-key name="cards_lists_ibfk_2" table="cards_lists" schema="" catalog="flash_cards_db" columns="idlists"/>
+      <index name="unique_idlists" unique="true" columns="idlists"/>
+    </table>
+  </data-source>
+</component>
