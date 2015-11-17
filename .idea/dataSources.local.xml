@@ -7,5 +7,11 @@
       <schema-pattern>flash_cards_db.*</schema-pattern>
       <default-schemas>flash_cards_db.* mysql.*</default-schemas>
     </data-source>
+    <data-source name="flash_card_db@localhost" uuid="bc210b71-e181-4739-803f-ea7948318593">
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>flash_card_db.*</schema-pattern>
+      <default-schemas>flash_card_db.*</default-schemas>
+    </data-source>
   </component>
 </project>

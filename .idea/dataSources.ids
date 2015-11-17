@@ -52,4 +52,38 @@
       <index name="unique_idlists" unique="true" columns="idlists"/>
     </table>
   </data-source>
+  <data-source name="flash_card_db@localhost" uuid="bc210b71-e181-4739-803f-ea7948318593">
+    <database-info product="MySQL" version="5.7.9" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper"/>
+    <schema name="" catalog="flash_card_db"/>
+    <table name="Cards" schema="" catalog="flash_card_db" type="TABLE">
+      <column name="cards_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="frontSide" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="backSide" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="cards_id"/>
+      <exported-key name="users_cards_ibfk_2" table="Users_Cards" schema="" catalog="flash_card_db" columns="cards_id"/>
+    </table>
+    <table name="Users" schema="" catalog="flash_card_db" type="TABLE">
+      <column name="users_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="fName" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="lName" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="bDay" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <primary-key name="PRIMARY" columns="users_id"/>
+      <exported-key name="users_cards_ibfk_1" table="Users_Cards" schema="" catalog="flash_card_db" columns="users_id"/>
+    </table>
+    <table name="Users_Cards" schema="" catalog="flash_card_db" type="TABLE">
+      <column name="users_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="cards_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="shownCount" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4" def="MA=="/>
+      <column name="rightCount" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4" def="MA=="/>
+      <column name="wrongCount" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4" def="MA=="/>
+      <column name="level" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4" def="MQ=="/>
+      <column name="inARow" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4" def="MA=="/>
+      <foreign-key name="users_cards_ibfk_1" columns="users_id" ref-table="Users" ref-schema="" ref-catalog="flash_card_db" ref-columns="users_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="users_cards_ibfk_2" columns="cards_id" ref-table="Cards" ref-schema="" ref-catalog="flash_card_db" ref-columns="cards_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+  </data-source>
 </component>

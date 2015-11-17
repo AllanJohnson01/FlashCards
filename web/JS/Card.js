@@ -2,13 +2,26 @@
  * Created by allanjohnson on 10/27/15.
  */
 var index;
+var wordsFromDb = [];
 var working = [];
+var level2Words = 0;
+var level3Words = 0;
+var level4Words = 0;
+var level5Words = 0;
 var originalLength;
 //*******************************This is the HTTP request
 function loadDoc(button, async) {
     var xhttp = new XMLHttpRequest();
     var jsonString;
     switch (button) {
+        case "user":
+            var params = "button="+button;
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    Init(xhttp.responseText);
+                }
+            };
+            break;
         case "start":
             var params = "button="+button;
             xhttp.onreadystatechange = function() {
@@ -63,31 +76,46 @@ function Card(parameters) {
 function Init(json){
 
     console.log(json);
-    var words = JSON.parse(json);
-    console.log(words);
-    for (var i in words) {
+    wordsFromDb = JSON.parse(json);
+    for (var i in wordsFromDb) {
         function addCard() {
-            words[i] = new Card({
-                id: words[i].id,
-                frontSide: words[i].front,
-                backSide: words[i].back,
-                shownCount: words[i].shownCount,
-                rightCount: words[i].rightCount,
-                wrongCount: words[i].wrongCount,
-                inARow: words[i].inARow,
-                level: words[i].level
+            wordsFromDb[i] = new Card({
+                id: wordsFromDb[i].id,
+                frontSide: wordsFromDb[i].front,
+                backSide: wordsFromDb[i].back,
+                shownCount: wordsFromDb[i].shownCount,
+                rightCount: wordsFromDb[i].rightCount,
+                wrongCount: wordsFromDb[i].wrongCount,
+                inARow: wordsFromDb[i].inARow,
+                level: wordsFromDb[i].level
             });
-            working.push(words[i]);
-            console.log(working[i]);
+            working.push(wordsFromDb[i]);
         }
-        if (working.length < 1 && words[i].level == 4) {
-            addCard();
-        } else if (working.length < 4 && words[i].level == 3){
-            addCard();
-        } else if (working.length < 10 && words[i].level == 2){
-            addCard();
-        } else if (working.length < 15 && words[i].level == 1) {
-            addCard();
+        if (wordsFromDb[i].level == 5) {
+            level5Words++;
+        }
+        if (wordsFromDb[i].level == 4) {
+            level4Words++;
+            if (working.length < 1) {
+                addCard();
+            }
+        }
+        if (wordsFromDb[i].level == 3) {
+            level3Words++;
+            if (working.length < 4) {
+                addCard();
+            }
+        }
+        if (wordsFromDb[i].level == 2) {
+            level2Words++
+            if (working.length < 10) {
+                addCard();
+            }
+        }
+        if (wordsFromDb[i].level == 1) {
+            if (working.length < 15) {
+                addCard();
+            }
         }
     }
     originalLength = working.length;
@@ -97,7 +125,7 @@ var currentCard;
 function setup() {
     var cvs = document.getElementById("mainCanvas");
     resizeCanvas(800,400);
-    background(211, 252, 252);
+    background(220, 220, 220);
 
     //*********************************CREATE the button sect
     var Button = function(config) {
@@ -110,7 +138,7 @@ function setup() {
     };
 
     Button.prototype.draw = function() {
-
+        noStroke();
         rect(this.x, this.y, this.width, this.height, 5);
         fill(0, 0, 0);
         textFont("sans-serif", 19);
@@ -171,6 +199,23 @@ function setup() {
                 console.log("Right this session: " + currentCard.frontSide + " " + currentCard.rightThisSession);
                 if (currentCard.rightCount > currentCard.wrongCount || currentCard.inARow >+ 5) {
                     currentCard.level++;
+
+                    switch (currentCard.level) {
+                        case 5:
+                            level5Words++;
+                            break;
+                        case 4:
+                            level4Words++;
+                            break;
+                        case 3:
+                            level3Words++;
+                            break;
+                        case 2:
+                            level2Words++;
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 working.splice(index,1);
             }
@@ -204,21 +249,57 @@ function setup() {
         }
     };
     //***************************
-    //ProgressBar
+    //ProgressBars
     var progressBar = function() {
         var incrementSize = width/originalLength;
         var multiplier = originalLength - working.length;
-        var colorIncrement = 205/originalLength;
-        var colorAmount = colorIncrement * multiplier;
         noStroke();
-        fill(255 - colorAmount, colorAmount, 0);
-        rect(0,0,incrementSize * multiplier, 15);
+        fill(199,244,100);
+        rect(0,height,incrementSize * multiplier, -15);
     };
+    var level2Bar = function() {
+        var incrementSize = height/wordsFromDb.length;
+        noStroke();
+        fill(85,98,112);
+        rect(0,height, 20, -(incrementSize * level2Words));
+        textAlign(CENTER, CENTER);
+        fill(255,255,255);
+        text("2", 10, height - 10);
+    }
+    var level3Bar = function() {
+        var incrementSize = height/wordsFromDb.length;
+        noStroke();
+        fill(78,205,196);
+        rect(20,height, 20, -(incrementSize * level3Words));
+        textAlign(CENTER, CENTER);
+        fill(255,255,255);
+        text("3", 30, height - 10);
+
+    }
+    var level4Bar = function() {
+        var incrementSize = height/wordsFromDb.length;
+        noStroke();
+        fill(255,107,107);
+        rect(40,height, 20, -(incrementSize * level4Words));
+        textAlign(CENTER, CENTER);
+        fill(255,255,255);
+        text("4", 50, height - 10);
+
+    }
+    var level5Bar = function() {
+        var incrementSize = height/wordsFromDb.length;
+        noStroke();
+        fill(196,77,88);
+        rect(60,height, 20, (incrementSize * level5Words));
+        textAlign(CENTER, CENTER);
+        fill(255,255,255);
+        text("5", 70, height - 10);
+    }
 //*********************************
 // Main logic: if just starting use words[], if finished, use struggling[], when struggling.length = 0 Congrats!
 
     var run = function() {
-        background(135,237,228);
+        background(220,220,220);
         fill(240,240,240,150);
         rect(0,0,width,height);
         fill(237, 50, 114);
@@ -248,6 +329,11 @@ function setup() {
         fill(140, 227, 118);
         correct.draw();
         progressBar();
+        level2Bar();
+        level3Bar();
+        level4Bar();
+        level5Bar();
+
     };
 }
 

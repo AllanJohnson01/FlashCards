@@ -24,6 +24,13 @@
     <link rel="stylesheet" type="text/css" href="./CSS/style.css">
   </head>
   <body>
+    <div>
+      <form action="/fc" method="post">
+        User Id: <br>
+        <input type="text" name="User Id" value="1">
+        <input type="button" value="Submit" onclick="">
+      </form>
+    </div>
     <canvas id="mainCanvas"></canvas>
   </body>
 </html>
