@@ -11,31 +11,39 @@ import java.util.List;
  * Created by allanjohnson on 10/30/15.
  */
 public class DbConnection {
+    private int USER = 2;
     public String initDb(){
         StringBuffer initDBData = new StringBuffer("[");
         try {
             //Get a connnection to the database
             Class.forName("com.mysql.jdbc.Driver");
-            Connection fcConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/flash_cards_db", "root", "test");
+            Connection fcConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/flash_card_db", "root", "test");
             //Create a statement object
             Statement statement = fcConnection.createStatement();
             //Execute the query
-            ResultSet testResultSet = statement.executeQuery("SELECT * from Cards");
+            ResultSet rs = statement.executeQuery("SELECT Users_Cards.cards_id," +
+                    " Cards.frontSide," +
+                    " Cards.backSide, shownCount," +
+                    " rightCount, wrongCount," +
+                    " level, inARow from Users_Cards \n" +
+                    "INNER JOIN Cards\n" +
+                    "ON Users_Cards.cards_id=Cards.cards_id\n" +
+                    "where users_id = " + USER + ";");
             //Process the result
             //****List<Card> dbCards = new ArrayList<>();
 
-            while (testResultSet.next()){
-                initDBData.append("{\"id\": "+testResultSet.getString("idCards") + ", ");
-                initDBData.append("\"front\": \""+testResultSet.getString("front") + "\", ");
-                initDBData.append("\"back\": \""+testResultSet.getString("backside") + "\", ");
-                initDBData.append("\"shownCount\": "+testResultSet.getString("shownCount") + ", ");
-                initDBData.append("\"rightCount\": "+testResultSet.getString("rightCount") + ", ");
-                initDBData.append("\"wrongCount\": "+testResultSet.getString("wrongCount") + ", ");
-                initDBData.append("\"inARow\": "+testResultSet.getString("inARow") + ", ");
-                if (testResultSet.isLast() != true) {
-                    initDBData.append("\"level\": " + testResultSet.getString("level") + "}, ");
+            while (rs.next()){
+                initDBData.append("{\"id\": " + rs.getString("cards_id")+ ", ");
+                initDBData.append("\"front\": \""+rs.getString("frontSide") + "\", ");
+                initDBData.append("\"back\": \""+rs.getString("backSide") + "\", ");
+                initDBData.append("\"shownCount\": "+rs.getString("shownCount") + ", ");
+                initDBData.append("\"rightCount\": "+rs.getString("rightCount") + ", ");
+                initDBData.append("\"wrongCount\": "+rs.getString("wrongCount") + ", ");
+                initDBData.append("\"inARow\": "+rs.getString("inARow") + ", ");
+                if (rs.isLast() != true) {
+                    initDBData.append("\"level\": " + rs.getString("level") + "}, ");
                 } else {
-                    initDBData.append("\"level\": " + testResultSet.getString("level") + "}]");
+                    initDBData.append("\"level\": " + rs.getString("level") + "}]");
                 }
             }
             System.out.println(initDBData);
@@ -50,17 +58,18 @@ public class DbConnection {
         try {
             //Get a connnection to the database
             Class.forName("com.mysql.jdbc.Driver");
-            Connection fcConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/flash_cards_db", "root", "test");
+            Connection fcConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/flash_card_db", "root", "test");
             //Create a statement object
-            Statement testStatement = fcConnection.createStatement();
+            Statement statement = fcConnection.createStatement();
             //Execute the query
-            int testResultSet = testStatement.executeUpdate("UPDATE Cards SET shownCount=" + shownCount +
+            int rs = statement.executeUpdate("UPDATE Users_Cards SET shownCount=" + shownCount +
                     ",rightCount=" + rightCount +
                     ",wrongCount=" + wrongCount +
                     ",level=" + level +
                     ",inARow=" + inARow +
-                    " WHERE idCards=" + id + ";");
-            System.out.println("Update query: " + testResultSet);
+                    " WHERE cards_id=" + id +
+                    " And users_id = " + USER + ";");
+            System.out.println("Update query: " + rs);
         } catch (Exception exc) {
             System.out.println("In the exception block %n");
             exc.printStackTrace();

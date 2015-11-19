@@ -65,6 +65,7 @@
       <column name="backSide" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="cards_id"/>
       <exported-key name="users_cards_ibfk_2" table="Users_Cards" schema="" catalog="flash_card_db" columns="cards_id"/>
+      <index name="unique_frontSide" unique="true" columns="frontSide"/>
     </table>
     <table name="Users" schema="" catalog="flash_card_db" type="TABLE">
       <column name="users_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>

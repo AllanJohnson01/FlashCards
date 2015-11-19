@@ -5,6 +5,14 @@
   Time: 6:41 PM
   To change this template use File | Settings | File Templates.
 --%>
+<%!
+  private static final String DEFAULT_USER = "Guest";
+%>
+<%
+  String user = request.getParameter("user");
+  if(user == null)
+    user = DEFAULT_USER;
+%>
 <%
     /*String fName = request.getParameter("fname");
     String lName = request.getParameter("lname");
@@ -25,10 +33,11 @@
   </head>
   <body>
     <div>
-      <form action="/fc" method="post">
-        User Id: <br>
-        <input type="text" name="User Id" value="1">
-        <input type="button" value="Submit" onclick="">
+      Hello, <%= user %>!<br /><br />
+      <form action="index.jsp" method="POST">
+        Enter your name:<br />
+        <input type="text" name="user" /><br />
+        <input type="submit" value="Submit" />
       </form>
     </div>
     <canvas id="mainCanvas"></canvas>

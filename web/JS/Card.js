@@ -261,7 +261,7 @@ function setup() {
         var incrementSize = height/wordsFromDb.length;
         noStroke();
         fill(85,98,112);
-        rect(0,height, 20, -(incrementSize * level2Words));
+        rect(0,height, 20, -(incrementSize * (level2Words + level3Words + level4Words + level5Words)));
         textAlign(CENTER, CENTER);
         fill(255,255,255);
         text("2", 10, height - 10);
@@ -270,7 +270,7 @@ function setup() {
         var incrementSize = height/wordsFromDb.length;
         noStroke();
         fill(78,205,196);
-        rect(20,height, 20, -(incrementSize * level3Words));
+        rect(20,height, 20, -(incrementSize * (level3Words + level4Words + level5Words)));
         textAlign(CENTER, CENTER);
         fill(255,255,255);
         text("3", 30, height - 10);
@@ -280,7 +280,7 @@ function setup() {
         var incrementSize = height/wordsFromDb.length;
         noStroke();
         fill(255,107,107);
-        rect(40,height, 20, -(incrementSize * level4Words));
+        rect(40,height, 20, -(incrementSize * (level4Words + level5Words)));
         textAlign(CENTER, CENTER);
         fill(255,255,255);
         text("4", 50, height - 10);
